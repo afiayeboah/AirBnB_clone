@@ -1,0 +1,2 @@
+# 0x00. AirBnB clone - The console #
+This undertaking involves initiating the development of my primary comprehensive web application – the AirBnB clone. This foundational step is of great significance, as the components crafted in this project will serve as vital building blocks for future endeavors. Spanning from HTML/CSS templating to database storage, API implementation, and front-end integration, the skills I gain throughout this phase will seamlessly interconnect and enhance my capabilities for all forthcoming projects.
