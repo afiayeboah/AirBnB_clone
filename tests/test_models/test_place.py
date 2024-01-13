@@ -37,13 +37,13 @@ class TestPlace(unittest.TestCase):
         Test that Place class contains the expected attributes.
         """
         attributes = ['city_id', 'user_id', 'name', 'description',
-                'number_rooms',
+                                                    'number_rooms',
                       'number_bathrooms', 'max_guest',
                       'price_by_night', 'latitude',
                       'longitude', 'amenity_ids']
         for attr in attributes:
             self.assertIn(attr, self.new_place.__dir__(),
-                    f"Attribute {attr} is missing")
+                          f"Attribute {attr} is missing")
 
     def test_Place_attributes_type(self):
         """
