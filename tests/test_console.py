@@ -3,6 +3,7 @@
 
 import unittest
 import console
+import sys
 from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
@@ -30,18 +31,14 @@ class Test_console(unittest.TestCase):
 
     def test_quit(self):
         """Test the quit command"""
-        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
-            with patch("sys.stdin", StringIO("quit\n")):
-                self.console.cmdloop()
-                self.assertEqual(mock_stdout.getvalue().strip(), "")
-    
+        con = self.create()
+        self.assertTrue(con.onecmd("quit"))
+
     def test_EOF(self):
         """Test the EOF command"""
-        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
-            with patch("sys.stdin", StringIO("EOF\n")):
-                self.console.cmdloop()
-                self.assertEqual(mock_stdout.getvalue().strip(), "")
+        con = self.create()
+        self.assertTrue(con.onecmd("EOF"))
+
 
 if __name__ == "__main__":
     unittest.main()
-

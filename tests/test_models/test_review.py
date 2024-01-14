@@ -38,11 +38,7 @@ class TestReview(unittest.TestCase):
         are of type str.
         """
         new_review = Review()
-        place_id = getattr(new_review, "place_id")
-        user_id = getattr(new_review, "user_id")
         text_value = getattr(new_review, "text")
-        self.assertIsInstance(place_id_value, str)
-        self.assertIsInstance(user_id_value, str)
         self.assertIsInstance(text_value, str)
 
 

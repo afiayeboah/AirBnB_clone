@@ -15,12 +15,14 @@ from models.review import Review
 from models.state import State
 from models.city import City
 
+
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand console class.
     """
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel", "User", "Amenity", "Place", "Review", "State", "City"]
+    valid_classes = ["BaseModel", "User", "Amenity",
+                     "Place", "Review", "State", "City"]
 
     def emptyline(self):
         """
@@ -46,14 +48,14 @@ class HBNBCommand(cmd.Cmd):
         Custom help message.
         """
         print("Available commands:")
-        print("  quit - Exit the program")
-        print("  EOF - Exit the program")
-        print("  help - Show this help message")
+        print("quit - Exit the program")
+        print("EOF - Exit the program")
+        print("help - Show this help message")
         print("  <class name>.all() - Print all instances of a class")
         print("  <class name>.show(<id>) - Show an instance by ID")
         print("  <class name>.destroy(<id>) - Destroy an instance by ID")
         print("  <class name>.count() - Count instances of a class")
-        print("  <class name>.update(<id>, <attribute>, <value>) - Update an instance")
+
         print()
 
     def default(self, arg):
@@ -85,11 +87,13 @@ class HBNBCommand(cmd.Cmd):
             else:
                 try:
                     obj_id, attr_val = e_arg.split(', ')
-                    return method_dict[cmd_met](f"{cls_nm} {obj_id} {attr_val}")
+                    return method_dict[cmd_met]
+                    (f"{cls_nm} {obj_id} {attr_val}")
                 except ValueError:
                     print("** Invalid syntax for update command **")
         else:
             print(f"** Unknown syntax: {arg} **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
