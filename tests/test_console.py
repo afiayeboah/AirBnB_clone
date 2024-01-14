@@ -31,13 +31,11 @@ class Test_console(unittest.TestCase):
 
     def test_quit(self):
         """Test the quit command"""
-        con = self.create()
-        self.assertTrue(con.onecmd("quit"))
+        self.assertTrue(self.console.onecmd("quit"))
 
     def test_EOF(self):
         """Test the EOF command"""
-        con = self.create()
-        self.assertTrue(con.onecmd("EOF"))
+        self.assertTrue(self.console.onecmd("EOF"))
 
 
 if __name__ == "__main__":
