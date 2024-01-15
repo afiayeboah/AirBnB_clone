@@ -6,7 +6,6 @@ import json
 import models
 import unittest
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
 from models.user import User
 from models.state import State
 from models.place import Place
@@ -30,6 +29,7 @@ class FileStorage:
     def save(self):
         objects_dict = {key: val.to_dict()
                         for key, val in self.__objects.items()}
+
         with open(self.__file_path, mode='w', encoding="UTF8") as fd:
             json.dump(objects_dict, fd)
 
