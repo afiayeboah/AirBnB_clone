@@ -6,6 +6,7 @@ Command interpreter for HBNB project using cmd module.
 
 import cmd
 import shlex
+import json
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -51,10 +52,10 @@ class HBNBCommand(cmd.Cmd):
         print("quit - Exit the program")
         print("EOF - Exit the program")
         print("help - Show this help message")
-        print("  <class name>.all() - Print all instances of a class")
-        print("  <class name>.show(<id>) - Show an instance by ID")
-        print("  <class name>.destroy(<id>) - Destroy an instance by ID")
-        print("  <class name>.count() - Count instances of a class")
+        print("<class name>.all() - Print all instances of a class")
+        print("<class name>.show(<id>) - Show an instance by ID")
+        print("<class name>.destroy(<id>) - Destroy an instance by ID")
+        print("<class name>.create() - Create a new instance of a class")
 
         print()
 
@@ -77,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
             'all': self.do_all,
             'show': self.do_show,
             'destroy': self.do_destroy,
-            'count': self.do_count,
+            'create': self.do_create,
             'update': self.do_update
         }
 
@@ -93,6 +94,108 @@ class HBNBCommand(cmd.Cmd):
                     print("** Invalid syntax for update command **")
         else:
             print(f"** Unknown syntax: {arg} **")
+
+    def do_create(self, arg):
+        """
+        Creates a new instance of a class, saves it, and prints the id.
+        """
+        commands = shlex.split(arg)
+        if not commands or commands[0] not in self.valid_classes:
+            print("** class name missing **" if not commands
+                  else "** class doesn't exist **")
+            return
+
+        new_instance = eval(f"{commands[0]}()")
+        new_instance.save()
+        print(new_instance.id)
+
+    def do_show(self, arg):
+        """
+        Prints the string rep of an instance based on the class name and id.
+        """
+        commands = shlex.split(arg)
+        if not commands or commands[0] not in self.valid_classes:
+            print("** class name missing **" if not commands
+                  else "** class doesn't exist **")
+            return
+        if len(commands) < 2:
+            print("** instance id missing **")
+            return
+
+        key = f"{commands[0]}.{commands[1]}"
+        instances = storage.all()
+        if key in instances:
+            print(instances[key])
+        else:
+            print("** no instance found **")
+
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name and id.
+        """
+        commands = shlex.split(arg)
+        if not commands or commands[0] not in self.valid_classes:
+            print("** class name missing **" if not commands
+                  else "** class doesn't exist **")
+            return
+        if len(commands) < 2:
+            print("** instance id missing **")
+            return
+
+        key = f"{commands[0]}.{commands[1]}"
+        instances = storage.all()
+        if key in instances:
+            del instances[key]
+            storage.save()
+        else:
+            print("** no instance found **")
+
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances
+        """
+        commands = shlex.split(arg)
+        instances = storage.all()
+        if not commands or commands[0] not in self.valid_classes:
+            print("** class doesn't exist **" if not commands else "")
+            return
+
+        result = [str(obj) for key, obj in instances.items()
+                  if key.startswith(commands[0])]
+        print(result)
+
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name and id
+        """
+        commands = shlex.split(arg)
+        if not commands or commands[0] not in self.valid_classes:
+            print("** class name missing **" if not commands
+                  else "** class doesn't exist **")
+            return
+        if len(commands) < 2:
+            print("** instance id missing **")
+            return
+
+        key = f"{commands[0]}.{commands[1]}"
+        instances = storage.all()
+        if key not in instances:
+            print("** no instance found **")
+            return
+
+        if len(commands) < 3:
+            print("** attribute name missing **")
+            return
+        if len(commands) < 4:
+            print("** value missing **")
+            return
+
+        attribute = commands[2]
+        value = commands[3].strip("'\"")
+
+        obj = instances[key]
+        setattr(obj, attribute, value)
+        obj.save()
 
 
 if __name__ == '__main__':
